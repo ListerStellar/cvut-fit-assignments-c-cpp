@@ -1,7 +1,17 @@
 # Draughts: enumerate white moves
 
-**Course:** PA1 C. **Stack:** recursion, `memcpy` board copies, `stdbool.h`.
+**PA1 C.**
 
-Board size 3..26. Pieces `w`/`W` (white man/king), `b`/`B` (black). Only dark squares, one piece per square. List every legal white move: simple steps, jumps, multi-jumps for men (forward along diagonals toward higher row) and kings (long slides and jumps per spec). Each line is a path ending with `+k` captures if any.
+## Task
 
-Grader does not care about output order (it reorders). Code aims for complete enumeration, not micro-opts.
+Generalized draughts on `n x n` (small `n`): enumerate all legal **white** moves including repeated captures; kings with long slides and jumps per PDF.
+
+## Algorithms / complexity
+
+- **Search:** **depth-first expansion** of capture sequences; board copied with **`memcpy`** for branching (backtracking without global undo in places).
+- **Complexity:** highly **output-sensitive**; branching grows with capture graph. Not a single clean `O(...)` bound (exponential in worst capture depth). Grader reorders output.
+- **Rules engine:** constant-time neighbor checks, validity of dark squares, piece types.
+
+## Stack
+
+Recursion, fixed max board arrays, `stdbool.h`.

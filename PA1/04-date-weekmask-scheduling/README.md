@@ -1,12 +1,19 @@
 # Calendar + weekday bitmask scheduling
 
-**Course:** PA1 (library functions). **Stack:** `TDATE`, bitmasks, no `time.h`.
+**PA1** (library functions, often compiled as C++ in the template).
 
-Implement:
+## Task
 
-- `countConnections(from, to, perWorkDay, dowMask)` - sum "connections" on each day in the inclusive range; Sat/Sun use ceil(perWorkDay/2) and ceil(perWorkDay/3); invalid dates or `from > to` returns -1.
-- `endDate(from, connections, perWorkDay, dowMask)` - last day covered by that many connections, or `0000-00-00` if invalid / not enough for the first day.
+`countConnections(from,to,perWorkDay,dowMask)` sums daily “connections” with weekend scaling (ceil halves/thirds). `endDate` inverts the budget: last day still covered. Gregorian **leap** rules including **4000** exception. No `time.h`.
 
-Gregorian leap years with the course rule (including years divisible by 4000 non-leap). Weekday from a formula (Zeller-type). Long spans: day loop for short ranges; chunking by weeks / hybrid paths in this file for speed.
+## Algorithms / complexity
 
-Source uses `#ifdef __PROGTEST__` so local `main` is stripped when linked to the school harness.
+- **Date arithmetic:** month lengths, compare, add/sub days, optional **Julian day number** for difference of dates.
+- **Weekday:** **Zeller-type** congruence (or similar) to map `TDATE` to `DOW_*` bit.
+- **Bitmask scheduling:** bitwise `&` of day bit with `dowMask`.
+- **Long intervals:** naive loop **`O(number of days)`** (too slow for huge spans); this file adds **week bucketing** (count one full week’s contribution, multiply) plus boundary segments **`O(weeks + boundary days)`** for `countConnections`, and a hybrid path for `endDate` when the budget is large.
+- **Space:** `O(1)`.
+
+## Stack
+
+`TDATE`, `long long` for sums, `ceil` for weekend rules, conditional `__PROGTEST__`.

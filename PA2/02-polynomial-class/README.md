@@ -1,9 +1,21 @@
 # Polynomial class (`CPolynomial`)
 
-**PA2 C++.** Coefficients in `std::vector<double>`. Operators: `*`, `*=`, `==`, `!=`, `[]` (grow on write), `()` for evaluation, `bool` and `!` for zero test, `degree()`, stream `operator<<` with the assignment's formatting rules (skip zero terms, `x` and `x^n`, signs).
+**PA2 C++.**
 
-`poly_var` in this file is a stub manipulator: it compiles but does not change the variable name in output.
+## Task
 
-Multiply is the naive double loop over coefficients (O(deg^2)). Fast multiplication (FFT / NTT style) is for course bonuses only.
+Dense polynomial in `x`: coeff per power, `operator[]`, `*`, `*=`, `==`, stream output, evaluation `()`, `degree`, `bool` / `!`. Optional `poly_var` manipulator (stub here).
 
-Copy control: implicit rule-of-zero is enough here (vector handles storage).
+## Algorithms / complexity
+
+- **Representation:** `std::vector<double>` as coefficient array (trim implicit trailing zeros in `==` logic).
+- **Multiplication:** **naive convolution** double loop **`O(deg(a) * deg(b))`**.
+- **Evaluation:** Horner would be **`O(deg)`**; this code uses direct powers **`O(deg)`** as well.
+- **Compare `==`:** linear over min size with tail zero check **`O(deg)`**.
+- **Space:** **`O(degree)`** coefficients.
+
+Bonuses: **FFT / NTT**-style multiply for huge degree (not implemented).
+
+## Stack
+
+`vector`, `iostream`, rule-of-zero copy (vector owns heap).

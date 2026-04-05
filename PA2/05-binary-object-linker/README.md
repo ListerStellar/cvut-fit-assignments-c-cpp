@@ -1,9 +1,19 @@
 # Binary object linker (`CLinker`)
 
-**PA2 C++.** Reads simplified object files: export count, import count, code size, export table (name, offset in code), import table (name, list of patch offsets), then raw code bytes. Builds a global map of exported symbols across all added files; duplicate export names throw `std::runtime_error`.
+**PA2 C++.**
 
-`linkOutput(out, entryPoint)` starts from the entry symbol, follows imports reachable from each copied function body, appends each function's byte range once (no padding between functions). Patches 32-bit little-endian addresses with `memcpy` (unaligned-safe). Missing symbol throws.
+## Task
 
-`addFile` / `linkOutput` throw `std::runtime_error` on I/O or link errors. Copy ctor and assignment are `delete`.
+Read toy **object files** (exports, imports, code blob). Build global symbol table. From **entry** symbol, **transitively** include every function whose code is needed (imports referenced from included bodies). **Relocate** 32-bit LE pointers with **`memcpy`** (unaligned-safe). Write concatenated code.
 
-Uses `std::vector`, `std::map`, `std::set`, streams, `uint8_t` / `uint32_t`.
+## Algorithms / complexity
+
+- **Parsing:** sequential read **`O(file size)`** per object; total **`O(sum of file sizes)`**.
+- **Symbol map:** `std::map<std::string, SFunction>` for exports **`O(F log F)`**, `F` functions across objects.
+- **Closure:** queue / BFS over dependency graph extracted from import sites inside each selected function body: **`O(edges in closure)`**.
+- **Patch pass:** for each included function, for each import slot in its byte range, write 4 bytes: **`O(output size)`**.
+- **Space:** holds all object code in memory **`O(input)`**.
+
+## Stack
+
+`fstream`, `vector<uint8_t>`, `map`, `set`, `runtime_error`.

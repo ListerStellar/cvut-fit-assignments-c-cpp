@@ -1,9 +1,18 @@
 # Stock: max profit and max loss on an index range
 
-**Course:** PA1 C. **Stack:** `malloc`/`realloc` price array, one linear scan per query.
+**PA1 C.**
 
-Stream: `+ price` appends a nonnegative price; `? l r` queries a closed index range. Max profit: best sell minus buy with buy before sell. Max loss: worst drop (output format is the assignment's Czech lines). Tie-break: smallest buy index, then smallest sell index.
+## Task
 
-Validate query indices against how many prices exist so far.
+Online stream: `+ p` appends price; `? l r` on current array asks for **max profit** (max sell-buy with increasing indices) and **max loss** (largest drop), with deterministic tie-break on indices.
 
-Hardest course bonus wants better than O(range) per query; this code scans the range each time, enough for the usual tests.
+## Algorithms / complexity
+
+- **Classic linear scan** in `[l,r]` (same family as “best time to buy and sell stock”): maintain **running minimum** for best profit and **running maximum** for best loss while scanning left to right.
+- **Per query:** **`O(r - l + 1)`** time, **`O(1)`** extra space beyond the array.
+- **Append:** dynamic array with doubling **`O(1)`** amortized per `+`.
+- **Bonuses** in the course ask for structures that beat linear time in `r-l` (segment trees, etc.); not in this file.
+
+## Stack
+
+`malloc`/`realloc`, `limits.h` for sentinels.

@@ -1,7 +1,20 @@
 # HTML-like table (`CTable`, `CEmpty`, `CText`, `CImage`)
 
-**PA2 C++.** Polymorphism is required: abstract `CContent` with `operator==`, `print(cellSize)`, `share()` (returns `std::shared_ptr<CContent>`), `getSize()`. Derived: `CEmpty`, `CText` (multiline, left/right align), `CImage` (ASCII rows, centered). `CTable` has fixed rows/cols, `getCell` / `setCell`, `operator==`, `operator<<` for bordered layout with column widths from cell content.
+**PA2 C++.**
 
-Implementation uses `dynamic_cast` / `typeid` in equality for runtime types. Cells hold `shared_ptr` to content; table resizes display grid to fit text and images.
+## Task
 
-STL allowed (`string`, `vector`, etc.) per assignment.
+Fixed grid of polymorphic **cells**: empty, text (multiline, left/right), image (ASCII art, centered). `getCell` / `setCell`, equality of whole table, pretty `operator<<` with borders and column width from content.
+
+## Algorithms / complexity
+
+- **Polymorphism:** abstract **`CContent`**, concrete types, **`shared_ptr`** for value semantics / sharing.
+- **Equality:** **`typeid` + `dynamic_cast`** per cell compare.
+- **Layout:** compute each cell’s **intrinsic size**, take row/col maxima, then **`print`** pads each cell to unified height/width: roughly **`O(rows * cols * (h + w))`** output characters (depends on implementation loops).
+- **setCell:** assigns new `shared_ptr` **`O(1)`**; deep compare walks grid **`O(rows*cols)`**.
+
+Course requires **virtual** dispatch (not tagged union only).
+
+## Stack
+
+`memory` (`shared_ptr`), `vector`, `string`, `sstream`, `typeinfo`.

@@ -1,7 +1,17 @@
 # Rectangle area comparison
 
-**Course:** PA1 C. **Stack:** `double`, same epsilon style as the other geometry tasks.
+**PA1 C.**
 
-Read height and width for two rectangles (both must be > 0). Compare areas with a tolerant equality check; say equal, or which rectangle is smaller. Bad input stops immediately with the standard error line.
+## Task
 
-Covers: `%le` input, domain checks, FP compares with scientific notation.
+Read two rectangles (strictly positive `double` sides), compare areas with tolerant equality, print which is smaller or “equal” per spec.
+
+## Algorithms / complexity
+
+- **Arithmetic:** two products, one comparison with **epsilon** (same pattern as PA1 01).
+- **Validation:** fail-fast on non-positive or malformed input.
+- **Time / space:** `O(1)`.
+
+## Stack
+
+`scanf` with `%le`, `double`, `math.h` / `float.h` for tolerance helper.

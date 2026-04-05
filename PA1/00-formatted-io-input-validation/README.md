@@ -1,9 +1,17 @@
 # Formatted I/O and input validation (quotes)
 
-**Course:** PA1 intro C. **Stack:** `stdio.h`, exact stdout for the grader.
+**PA1 intro C.**
 
-Reads one integer, prints a fixed quote or a specific error line. Output must match the reference byte for byte (prompts, `\n`, messages).
+## Task
 
-Parsing: check `scanf` results. Out of range is one error string; invalid integer is another. This repo version also rejects junk after the number (e.g. `1.23`) for the stricter bonus tests.
+Read one integer (strictly: integer token and optional bonus rejection of trailing garbage), print one of several fixed Klingon-flavored lines or a fixed error string. Grader compares stdout **exactly**.
 
-Covers: prompts, formatted print, validation, and not "it runs locally" but "it matches the spec".
+## Algorithms / complexity
+
+- **No algorithmic depth:** constant branching on parsed value.
+- **Parsing:** `scanf` return value inspection; distinguish EOF, no conversion, out-of-range, and (bonus) extra characters after the number.
+- **Time / space:** `O(1)` each.
+
+## Stack
+
+`stdio.h` only in the hand-in path; deterministic string literals.

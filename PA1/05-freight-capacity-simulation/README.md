@@ -1,9 +1,17 @@
 # Freight: finish date and rental cost
 
-**Course:** PA1 C. **Stack:** `qsort`, static array up to 100k vehicles, `long long`.
+**PA1 C.**
 
-Input: list of vehicles `{ [from-to, capacity, price], ... }` then lines `start_day cargo`. Each day you add the capacity of every vehicle active that day until cargo is 0. Goal is to finish as early as possible. Cost: every active vehicle's daily price is charged for each day from start through the last shipping day (course rule).
+## Task
 
-Parse braces/brackets/commas strictly. Sort by `from` to drive the simulation. If cargo never finishes after the last vehicle ends, print the "too large load" message.
+Parse many vehicles with active day intervals, daily capacity, daily rent. For each query `(start, cargo)`, ship as early as possible: each day sum capacities of all vehicles active that day. Cost sums rents of **all** active vehicles on every day from first shipping day through finish (course rule).
 
-Bonuses in the original task want faster range tricks; here it is day-by-day simulation after sort.
+## Algorithms / complexity
+
+- **Sorting:** **`qsort`** on vehicle `from` key: **`O(n log n)`**, `n <= 100000`.
+- **Simulation:** outer loop over days until cargo done; inner loop over all vehicles to add capacity if `from <= day <= to`. Worst **`O(D * n)`** where `D` is days simulated; acceptable for mandatory tests; bonuses need **interval aggregation** (sweep line, prefix sums).
+- **Space:** static array `O(n)`.
+
+## Stack
+
+`stdlib` (`qsort`), `long long` for cargo/cost, structured scanf parsing.

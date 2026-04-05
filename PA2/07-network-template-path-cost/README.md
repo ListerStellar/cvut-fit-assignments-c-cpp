@@ -1,7 +1,18 @@
 # Network path cost (`CNet<T>` template)
 
-**PA2 C++.** Template parameter `T_` is node id: copyable, comparable with `==`. `add(x, y, cost)` adds an undirected weighted edge (stored twice in an adjacency-style `vector` of `(node, neighbors)`). Fluent: returns `*this`. `optimize()` is a no-op here (course allows empty; bonuses use preprocessing on a tree). `totalCost(x, y)` returns the sum of edge costs on the path, or -1 if a node is missing or unreachable.
+**PA2 C++.**
 
-Search: queue BFS-style expansion with accumulated cost; visited list is a `vector` checked by linear scan. Inputs are trees in tests, so there is a single simple path; this matches the sample asserts.
+## Task
 
-Bonuses: faster lookup with `std::hash` or `operator<`, and O(1) or near-O(1) queries after `optimize()` on a tree (e.g. LCA). Not implemented in this file.
+Undirected **weighted** graph (tests are **trees**). `add(x,y,cost)`, `optimize()` (no-op here), `totalCost(x,y)` sum of edge costs on the connecting path, or `-1` if missing.
+
+## Algorithms / complexity
+
+- **Storage:** `vector` of `(node, vector<(neighbor,cost)>)`; finding adjacency list for a node scans **`O(V)`** in this file (no hash map from `T_`).
+- **Query:** **queue BFS** style expansion with **accumulated cost**; **visited** via linear scan over **`O(V)`** vector per step. On a **tree**, unique simple path so first arrival at target is correct total.
+- **Time:** worst **`O(V * (V+E))`** with this linear lookup; with `unordered_map` on nodes would be **`O(V+E)`** per query.
+- **`optimize`:** empty; bonuses use **LCA + prefix sums** on a tree for **`O(log V)`** or **`O(1)`** queries after **`O(V)`** prep.
+
+## Stack
+
+`queue`, `vector`, templates; tests use `std::string`, `int`, `CDumbString`.

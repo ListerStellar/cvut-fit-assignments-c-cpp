@@ -1,17 +1,21 @@
 # PA2: C++ and OOP (CTU FIT)
 
-Classes, operators, STL where allowed, and a few "systems flavored" exercises. Each folder is one hand-in with `main.cpp` (local tests under `#ifndef __PROGTEST__`).
+Classes, **operator overloading**, **STL**, **polymorphism**, and a few **systems-style** bits (binary I/O, linking toy model). Each folder is one `main.cpp` hand-in (local tests under `#ifndef __PROGTEST__`).
 
-## Assignments
+## Assignments (structures and complexity)
 
-| # | Folder | Summary |
-|---|--------|---------|
-| 01 | [01-tax-register](01-tax-register/) | `CTaxRegister`, sorted `vector`, iterator, uniqueness rules |
-| 02 | [02-polynomial-class](02-polynomial-class/) | `CPolynomial`, operators, stream output, `vector<double>` coeffs |
-| 03 | [03-population-register-deep-copy](03-population-register-deep-copy/) | `CRegister`, own string class, deep copy, address history |
-| 04 | [04-mail-log-parser](04-mail-log-parser/) | `CMailLog`, parse server log, `multimap`, time range queries |
-| 05 | [05-binary-object-linker](05-binary-object-linker/) | `CLinker`, read `.o` blobs, resolve imports, patch LE 32-bit |
-| 06 | [06-polymorphic-table](06-polymorphic-table/) | `CTable`, `CContent` hierarchy, `shared_ptr`, `operator<<` |
-| 07 | [07-network-template-path-cost](07-network-template-path-cost/) | `CNet<T>` template, adjacency list, path cost (`totalCost`) |
+| # | Folder | Main DS / algorithms | Typical complexity (this repo) |
+|---|--------|----------------------|--------------------------------|
+| 01 | [01-tax-register](01-tax-register/) | Sorted `vector`, `upper_bound`, linear scan by account | insert/remove **`O(n)`** shift; find by name **`O(log n)`** + **`O(n)`** insert; income by account **`O(n)`** |
+| 02 | [02-polynomial-class](02-polynomial-class/) | Dense coeff vector, naive multiply | `*`: **`O(deg(a)*deg(b))`**; eval **`O(deg)`**; `==` **`O(deg)`** |
+| 03 | [03-population-register-deep-copy](03-population-register-deep-copy/) | Manual strings, deep copy, per-person history arrays | copy register **`O(total data)`**; `add` amortized **`O(1)`** resize; `resettle` may shift **`O(k)`** per person |
+| 04 | [04-mail-log-parser](04-mail-log-parser/) | `map` by mail id, `multimap` by timestamp | parse **`O(lines)`**; `listMail` **`O(log M + k)`** range on `k` hits |
+| 05 | [05-binary-object-linker](05-binary-object-linker/) | Symbol map, BFS/queue closure over imports | **`O(total input bytes + output bytes)`** |
+| 06 | [06-polymorphic-table](06-polymorphic-table/) | `shared_ptr`, RTTI equality, layout pass | render **`O(rows*cols*h)`** on cell heights/widths |
+| 07 | [07-network-template-path-cost](07-network-template-path-cost/) | Adjacency list, BFS with path sum | **`O(V+E)`** expansion; node lookup **`O(V)`** linear scan by `T_` |
 
-Course forbids `std::map` in task 01 only; task 03 forbids STL strings/containers in the hand-in (this code uses a custom `CString` and raw arrays).
+Constraints: task **01** forbids `std::map`. Task **03** forbids STL string/containers in the submission (custom `CString` + raw arrays here).
+
+## Stack
+
+C++17/20 features as used (`<=>`, structured bindings, `optional`, `span` in local tests for 02, etc.), RTTI where needed (task 06), `std::` containers per task rules.

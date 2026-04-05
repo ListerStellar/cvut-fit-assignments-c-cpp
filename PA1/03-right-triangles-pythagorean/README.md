@@ -1,9 +1,18 @@
 # Pythagorean triples on an integer interval
 
-**Course:** PA1 C. **Stack:** loops, GCD (Euclid), stdin until EOF.
+**PA1 C.**
 
-Closed interval `[lo; hi]`, positive integers. Count/list right triangles with integer sides, all three sides in range. Permutations of the same triple count once.
+## Task
 
-Commands: `? <lo;hi>` prints triples; `# <lo;hi>` prints only the count. Strict syntax on `<`, `;`, `>`.
+In `[lo; hi]` list or count **distinct** integer right triangles (order of sides irrelevant). Commands `?` (print) and `#` (count only) until EOF.
 
-Implementation: Euclid-style generation + scaling for `#`; nested loops for `?` (order of lines can vary; grader normalizes). Faster bonuses in the course are optional; this split matches the usual mandatory layout.
+## Algorithms / complexity
+
+- **Number theory:** **primitive Pythagorean triples** via coprime `(m, i)` with parity constraints; **Euclid GCD**; scale by `k` so all sides land in `[lo,hi]` for **`#`** (fewer iterations than triple nested loop on the full range when `hi` is large).
+- **Listing (`?`):** naive **triple loop** `a<=b<=c`, check `a^2+b^2=c^2` (grader accepts any order of lines / sides). Worst **`O((hi-lo)^3)`** in the naive radius (here bounded by problem tests).
+- **Counting (`#`):** structured generation loop over `m`, inner `i`, inner `k`; roughly **`O(\sqrt{hi} \cdot \sqrt{hi} \cdot (hi / c_{min}))`** style bound, much better than pure triple loop for big intervals (course speed tests target this path).
+- **Space:** `O(1)` besides input buffer.
+
+## Stack
+
+Loops, integer arithmetic, `scanf` mini-language.

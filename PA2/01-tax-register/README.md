@@ -1,7 +1,20 @@
 # Tax register (`CTaxRegister`, `CIterator`)
 
-**PA2 C++.** `std::vector`, `std::string`, `algorithm` (`upper_bound`, `insert`, `erase`). No `std::map`.
+**PA2 C++.**
 
-People are unique by `(name, address)` and by `account`. `birth` inserts in sort order (name, then address). `death` removes by name+address. `income` / `expense` have overloads for account string or name+address; lookup by account scans the vector linearly. `audit` fills account and running income/expense totals. `listByName` returns an iterator over the sorted vector (const reference to the internal list inside the iterator).
+## Task
 
-Birth/death do binary search for the slot, then vector insert/erase (shift cost). Hot path is many income/expense calls; account lookup is O(n) in this implementation.
+Database of people: unique `(name,addr)` and unique `account`. `birth`/`death`, `income`/`expense` by name or account, `audit`, sorted iteration via `CIterator`. **`std::map` forbidden**; use sorted sequential container + binary search.
+
+## Algorithms / complexity
+
+- **Ordering:** vector kept sorted by `(name, address)` using **`std::upper_bound`** + **`vector::insert`/`erase`**.
+- **birth / death:** locate slot **`O(log n)`** binary search, then **`O(n)`** array shift in worst case.
+- **income / expense by account:** **linear scan** **`O(n)`** over the vector (hot path in the assignment; map would be `O(log n)` but disallowed).
+- **income / expense / audit by name+addr:** **`O(log n)`** search + `O(1)` update at iterator.
+- **listByName:** iterator walks **`O(n)`** total.
+- **Space:** **`O(n)`** records.
+
+## Stack
+
+`std::vector`, `std::string`, `<algorithm>`.

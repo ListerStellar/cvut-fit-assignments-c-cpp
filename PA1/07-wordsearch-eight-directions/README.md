@@ -1,9 +1,18 @@
 # Word search: 8 directions, strike, secret
 
-**Course:** PA1 C. **Stack:** `malloc`/`realloc` buffer, `ctype`, `string`.
+**PA1 C.**
 
-Read a rectangle of `a-z` and `.`, blank line, then commands. `- word`: find all matches in 8 directions, count, mark hits (here: flip to uppercase). `# word`: count only. `?`: print leftover lowercase letters as the "secret", 60 chars per line.
+## Task
 
-Grid stored row-major in one buffer; from each cell try 8 step vectors. Input checks: rectangular grid, valid commands, words length >= 2, lowercase only.
+Store grid; commands `- word` (find all, strike), `# word` (count), `?` (print remaining lowercase, wrap 60). Eight axial + diagonal directions, both orientations.
 
-Bonus tier wants faster search for many queries; this is a full grid scan each time.
+## Algorithms / complexity
+
+- **Pattern matching on grid:** for each anchor cell matching first letter, walk **8 fixed direction vectors** for the full word length (**`O(L)`** check).
+- **Per query:** **`O(R * C * L * 8)`** worst case, `R,C` grid size, `L` word length; same word may be searched many times (no Aho-Corasick / suffix structures here).
+- **Secret output:** single pass over grid **`O(R*C)`**.
+- **Space:** dynamic 1D buffer **`O(R*C)`**.
+
+## Stack
+
+`malloc`/`realloc`, `ctype` for case flip and validation.

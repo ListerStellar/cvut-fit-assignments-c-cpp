@@ -1,9 +1,21 @@
 # Mail log (`CMailLog`)
 
-**PA2 C++.** STL: `map`, `multimap`, `set`, `list`, `optional`, iostreams. Your code lives in a namespace (here `MysteriousNamespace` in the template); `CTimeStamp` and `CMail` are provided locally under `#ifndef __PROGTEST__`.
+**PA2 C++.**
 
-`parseLog` reads lines, parses month/day/year time, mail id, and message. Keeps `from=`, `subject=`, `to=`; skips other lines. Each `to=` counts as one delivered mail (possibly multiple `to=` per id). Late `to=` lines are allowed by the spec. After a pass, builds `CMail` objects and stores them in `std::multimap<CTimeStamp, CMail, CompareTime>` keyed by delivery time.
+## Task
 
-`listMail(from, to)` returns mails in that inclusive time window in ascending time order. `activeUsers` returns distinct from/to addresses in the window.
+Parse MTA-style lines; correlate `mailID` with `from=`, optional `subject=`, each `to=` as separate delivered message with its timestamp. **`parseLog`** cumulative; **`listMail`** by time window; **`activeUsers`** as set of addresses involved.
 
-`CMailLog` and helpers sit inside the student namespace; closing brace before local `main` matches the harness layout.
+## Algorithms / complexity
+
+- **Parsing:** line scan **`O(total input length)`**; month name -> int via **`std::map`**.
+- **Staging:** `std::map<std::string, SMail>` by id while scanning; each `to=` may insert into inner **`std::multimap<CTimeStamp, std::string>`** ordered by time.
+- **Final index:** flatten into **`std::multimap<CTimeStamp, CMail, CompareTime>`** for **`O(log M)`** insert per mail, `M` stored messages.
+- **Queries:** **`lower_bound`** on timestamp then linear scan while in range: **`O(log M + k)`** for `k` results.
+- **activeUsers:** same range walk, insert into **`std::set`**: **`O((log M + k) log U)`** naive on set ops.
+
+Student code lives in a **namespace**; `CTimeStamp` / `CMail` mocked under `#ifndef __PROGTEST__`.
+
+## Stack
+
+`map`, `multimap`, `set`, `list`, `optional`, `sstream`.
